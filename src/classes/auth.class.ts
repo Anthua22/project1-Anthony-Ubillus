@@ -24,4 +24,6 @@ export class Auth {
         let peticion = Http.post(SERVER + "/auth/login", this);
         return peticion;
     }
+
+    
 }

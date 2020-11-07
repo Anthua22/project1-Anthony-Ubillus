@@ -8,7 +8,6 @@ let img:HTMLImageElement;
 
 let form: HTMLFormElement;
 
-let token:String;
 
 document.addEventListener('DOMContentLoaded', e => {
     form = document.getElementById('form-register') as HTMLFormElement;
@@ -62,6 +61,7 @@ function addUser(event: Event): void {
         alert("Error: The emails doesn't match");
     }
 
+    
     
     
 

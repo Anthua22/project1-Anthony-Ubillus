@@ -1,6 +1,5 @@
-import { SERVER } from "../constants";
+
 import { IUser } from "../interfaces/iuser";
-import { Http } from "./http.class";
 
 export class User implements IUser {
     name?: string;
@@ -13,5 +12,11 @@ export class User implements IUser {
     lng?: number;
 
   
+    static validateToken():boolean{
+        if(localStorage.token!= null){
+            return true;
+        }
+        return false;
+    }
    
 }
