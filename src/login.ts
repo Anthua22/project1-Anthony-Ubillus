@@ -1,6 +1,5 @@
 import Swal from "sweetalert2";
 import { Auth } from "./classes/auth.class";
-import { ResponseAuth } from "./classes/responseauth.class";
 import * as ErrorMesagge from "./classes/responseError.class";
 import { User } from "./classes/user.class";
 
@@ -23,9 +22,8 @@ function login(event : Event): void {
     user.email = (form.email as HTMLInputElement).value;
     user.password = (form.password as HTMLInputElement).value;
     auth = new Auth(user);
-    console.log(auth)
     auth.postLogin().then(x => {
-        localStorage.setItem("token", (x as ResponseAuth).accessToken);
+        localStorage.setItem("token", x.accessToken);
         location.assign('index.html');
     }).catch(x => {
 

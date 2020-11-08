@@ -40,7 +40,6 @@ function convertToBase64(file: File): void {
     if (file) {
         reader.readAsDataURL(file);
     }
-
     reader.addEventListener('load', () => {
         img.src = reader.result.toString();
         user.photo = reader.result.toString();
@@ -50,16 +49,16 @@ function convertToBase64(file: File): void {
 function addUser(event: Event): void {
     event.preventDefault();
     if (validateEmail()) {
+     
         user.email = (form.email as HTMLInputElement).value;
         user.password = (form.password as HTMLInputElement).value;
         user.name = (form.nameUser as HTMLInputElement).value;
         user.lat = parseFloat((form.lat as HTMLInputElement).value);
         user.lng = parseFloat((form.lng as HTMLInputElement).value);
-        console.log(user)
-        Auth.postRegister(user).then(x => {
+        User.postRegister(user).then(x => {
             location.assign('login.html');
         }).catch(x => {
-            let promise: Promise<ErrorMesagge.ResponseErrorRegister> = (x.json() as Promise<ErrorMesagge.ResponseErrorRegister>);
+            let promise: Promise<ErrorMesagge.ResponseErrorRegister> = x.json() as Promise<ErrorMesagge.ResponseErrorRegister>;
             promise.then(y => {
                 let errors: string = '';
                 y.message.forEach(x => {

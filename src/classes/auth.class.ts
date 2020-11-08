@@ -1,4 +1,5 @@
 import { SERVER } from "../constants";
+import { TokenResponse } from "../interfaces/responses";
 import { Http } from "./http.class";
 import { User } from "./user.class";
 
@@ -15,13 +16,15 @@ export class Auth {
         this.lng = user.lng;
     }
 
-    static postRegister(user: User) {
-        let peticion = Http.post(SERVER + "/auth/register", user);
-        return peticion;
+    static validateToken(): boolean {
+        if (localStorage.token != null) {
+            return true;
+        }
+        return false;
     }
 
-    postLogin() {
-        let peticion = Http.post(SERVER + "/auth/login", this);
+    postLogin():Promise<TokenResponse> {
+        let peticion:Promise<TokenResponse>= Http.post(SERVER + "/auth/login", this);
         return peticion;
     }
 
