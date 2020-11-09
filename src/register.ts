@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { Auth } from "./classes/auth.class";
 import { Geolocation } from "./classes/geolocation.class";
 import { User } from "./classes/user.class";
 import * as ErrorMesagge from "./classes/responseError.class";

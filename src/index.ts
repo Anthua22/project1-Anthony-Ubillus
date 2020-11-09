@@ -3,7 +3,7 @@ import { Product } from "./classes/product.class";
 import { IProduct } from "./interfaces/iproduct";
 
 let productscontainer: HTMLDivElement;
-let logout:HTMLElement;
+let logout: HTMLElement;
 
 
 document.addEventListener('DOMContentLoaded', e => {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', e => {
     }
 
     logout = document.getElementById('logout');
-    logout.addEventListener('click',logoutFunction);
+    logout.addEventListener('click', logoutFunction);
 
     productscontainer = document.getElementById("productsContainer") as HTMLDivElement;
     Product.getAll().then(x => x.forEach(y => {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', e => {
 
 })
 
-function logoutFunction():void{
+function logoutFunction(): void {
     localStorage.removeItem('token');
     location.assign("login.html");
 }

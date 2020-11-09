@@ -6,6 +6,7 @@ import { IUser } from "../interfaces/iuser";
 import { ProductsResponse } from "../interfaces/responses";
 import { Http } from "./http.class";
 import * as moment from 'moment';
+import Swal from "sweetalert2";
 
 const productsTemplate:(product:IProduct) => string = require("../../templates/product.handlebars");
 
@@ -48,19 +49,35 @@ export class Product implements IProduct {
     /*static async get(id: number): Promise<Product> {
 
     }*/
+
+
     async post(): Promise<Product> {
         let peticion = Http.post<Product>(SERVER+"/products",this);
         return peticion;
-    }/*
+    }
     async delete(): Promise<void> {
-
-    }*/
+        await Http.delete<void>(`${SERVER}/products/${this.id}`);
+    }
     toHTML(): HTMLDivElement {
+        
         let card:HTMLDivElement = document.createElement('div');
         card.classList.add("card","shadow")
         this.datePublished = moment(this.datePublished,"YYYYMMDD").startOf('hour').fromNow();
         let prodhtml = productsTemplate(this);
         card.innerHTML=prodhtml;
+        if(this.mine){
+            let btndelte:HTMLElement = card.querySelector('button.btn');
+            btndelte.addEventListener('click',  e=>{
+                this.delete().then(z=>card.remove()).catch(err=> 
+                    Swal.fire({
+                        icon:'error',
+                        title:'Login Error',
+                        text:err
+                    }));
+               
+            })
+        }
+
         return card;
         
     }
