@@ -1,6 +1,5 @@
 import { Auth } from "./classes/auth.class";
 import { Product } from "./classes/product.class";
-import { IProduct } from "./interfaces/iproduct";
 
 let productscontainer: HTMLDivElement;
 let logout: HTMLElement;
