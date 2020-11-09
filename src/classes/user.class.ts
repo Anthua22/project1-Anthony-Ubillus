@@ -52,6 +52,7 @@ export class User implements IUser {
 
     toHTML(): HTMLDivElement{
         let div : HTMLDivElement = document.createElement('div');
+        div.classList.add("row","mt-4");
         let userHtml = profileTemplate(this);
         div.innerHTML = userHtml;
         return div;

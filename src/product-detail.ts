@@ -33,7 +33,7 @@ function rescueProduct(): void {
     ).catch(x => {
         Swal.fire({
             icon: 'error',
-            title: 'Login Error',
+            title: 'Error',
             text: x
         });
     });

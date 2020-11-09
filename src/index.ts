@@ -5,6 +5,8 @@ let productscontainer: HTMLDivElement;
 let logout: HTMLElement;
 let serch:HTMLInputElement;
 let products:Promise<Product[]>;
+
+
 document.addEventListener('DOMContentLoaded', e => {
 
     if (!Auth.validateToken()) {
@@ -28,7 +30,6 @@ function logoutFunction(): void {
 }
 
 
-
 function filter() {
 
     let vacia = false;
@@ -43,13 +44,8 @@ function filter() {
     }
 
     products.then(x => {
-        let productsfilter = x.map(y => {
-            if (y.title.includes(serch.value.toUpperCase()) || y.description.includes(serch.value)) {
-                return y
-            } else {
-                return null;
-            }
-        })
+        let productsfilter = x.filter(x=>x.title.toLocaleLowerCase().includes(serch.value.toLocaleLowerCase()) || x.description.toLocaleLowerCase().includes(serch.value.toLocaleLowerCase()))
+     
         productsfilter.forEach(x => productscontainer.appendChild(x.toHTML()));
     });
 }
