@@ -1,10 +1,11 @@
+import Swal from "sweetalert2";
 import { Auth } from "./classes/auth.class";
 import { Product } from "./classes/product.class";
 
 let productscontainer: HTMLDivElement;
 let logout: HTMLElement;
-let serch:HTMLInputElement;
-let products:Promise<Product[]>;
+let serch: HTMLInputElement;
+let products: Promise<Product[]>;
 
 
 document.addEventListener('DOMContentLoaded', e => {
@@ -20,8 +21,12 @@ document.addEventListener('DOMContentLoaded', e => {
     products = Product.getAll();
     products.then(x => x.forEach(y => {
         productscontainer.appendChild(y.toHTML());
-    })).catch(y => console.log(y));
-    serch.addEventListener('keyup',filter)
+    })).catch(y => Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: y
+    }));
+    serch.addEventListener('keyup', filter)
 })
 
 function logoutFunction(): void {
@@ -30,9 +35,9 @@ function logoutFunction(): void {
 }
 
 
-function filter() {
+function filter(): void {
 
-    let vacia = false;
+    let vacia: boolean = false;
 
     while (vacia == false) {
         if (productscontainer.firstChild != null) {
@@ -44,8 +49,12 @@ function filter() {
     }
 
     products.then(x => {
-        let productsfilter = x.filter(x=>x.title.toLocaleLowerCase().includes(serch.value.toLocaleLowerCase()) || x.description.toLocaleLowerCase().includes(serch.value.toLocaleLowerCase()))
-     
+        let productsfilter = x.filter(x => x.title.toLocaleLowerCase().includes(serch.value.toLocaleLowerCase()) || x.description.toLocaleLowerCase().includes(serch.value.toLocaleLowerCase()))
+
         productsfilter.forEach(x => productscontainer.appendChild(x.toHTML()));
-    });
+    }).catch(y => Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: y
+    }));;
 }
