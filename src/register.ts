@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import { Geolocation } from "./classes/geolocation.class";
 import { User } from "./classes/user.class";
 import * as ErrorMesagge from "./classes/responseError.class";
+import { IUser } from "./interfaces/iuser";
 
 let user: User;
 let img: HTMLImageElement;
@@ -12,7 +13,7 @@ let form: HTMLFormElement;
 document.addEventListener('DOMContentLoaded', e => {
     form = document.getElementById('form-register') as HTMLFormElement;
     img = document.getElementById('imgPreview') as HTMLImageElement;
-    user = new User();
+
     geolocation();
     (form.avatar as HTMLInputElement).addEventListener('change', () => convertToBase64((form.avatar as HTMLInputElement).files[0]));
     form.addEventListener('submit', addUser);
@@ -48,12 +49,13 @@ function convertToBase64(file: File): void {
 function addUser(event: Event): void {
     event.preventDefault();
     if (validateEmail()) {
-     
-        user.email = (form.email as HTMLInputElement).value;
-        user.password = (form.password as HTMLInputElement).value;
-        user.name = (form.nameUser as HTMLInputElement).value;
-        user.lat = parseFloat((form.lat as HTMLInputElement).value);
-        user.lng = parseFloat((form.lng as HTMLInputElement).value);
+        let us: IUser = { email: (form.email as HTMLInputElement).value, password: (form.password as HTMLInputElement).value, name: (form.nameUser as HTMLInputElement).value, lat: parseFloat((form.lat as HTMLInputElement).value), lng: parseFloat((form.lng as HTMLInputElement).value) };
+
+        user = new User(us);
+
+
+
+
         User.postRegister(user).then(x => {
             location.assign('login.html');
         }).catch(x => {

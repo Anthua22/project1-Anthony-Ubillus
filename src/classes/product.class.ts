@@ -56,14 +56,18 @@ export class Product implements IProduct {
         let peticion = Http.post<Product>(SERVER + "/products", this);
         return peticion;
     }
+
+    
     async delete(): Promise<void> {
         await Http.delete<void>(`${SERVER}/products/${this.id}`);
     }
+
+
     toHTML(): HTMLDivElement {
 
         let card: HTMLDivElement = document.createElement('div');
         card.classList.add("card", "shadow")
-        this.datePublished = moment(this.datePublished, "YYYYMMDD").startOf('hour').fromNow();
+        this.datePublished = moment(this.datePublished).startOf('hour').fromNow();
         let prodhtml = productsTemplate(this);
         card.innerHTML = prodhtml;
         if (this.mine) {
