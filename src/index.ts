@@ -3,8 +3,8 @@ import { Product } from "./classes/product.class";
 
 let productscontainer: HTMLDivElement;
 let logout: HTMLElement;
-
-
+let serch:HTMLInputElement;
+let products:Promise<Product[]>;
 document.addEventListener('DOMContentLoaded', e => {
 
     if (!Auth.validateToken()) {
@@ -13,12 +13,13 @@ document.addEventListener('DOMContentLoaded', e => {
 
     logout = document.getElementById('logout');
     logout.addEventListener('click', logoutFunction);
-
+    serch = document.getElementById('search') as HTMLInputElement;
     productscontainer = document.getElementById("productsContainer") as HTMLDivElement;
-    Product.getAll().then(x => x.forEach(y => {
+    products = Product.getAll();
+    products.then(x => x.forEach(y => {
         productscontainer.appendChild(y.toHTML());
     })).catch(y => console.log(y));
-
+    serch.addEventListener('keyup',filter)
 })
 
 function logoutFunction(): void {
@@ -26,3 +27,29 @@ function logoutFunction(): void {
     location.assign("login.html");
 }
 
+
+
+function filter() {
+
+    let vacia = false;
+
+    while (vacia == false) {
+        if (productscontainer.firstChild != null) {
+            productscontainer.removeChild(productscontainer.firstChild)
+        } else {
+            vacia = true;
+        }
+
+    }
+
+    products.then(x => {
+        let productsfilter = x.map(y => {
+            if (y.title.includes(serch.value.toUpperCase()) || y.description.includes(serch.value)) {
+                return y
+            } else {
+                return null;
+            }
+        })
+        productsfilter.forEach(x => productscontainer.appendChild(x.toHTML()));
+    });
+}
