@@ -5,8 +5,9 @@ import { IProduct } from "../interfaces/iproduct";
 import { IUser } from "../interfaces/iuser";
 import { ProductsResponse } from "../interfaces/responses";
 import { Http } from "./http.class";
-import { User } from "./user.class";
+import * as moment from 'moment';
 
+const productsTemplate:(product:IProduct) => string = require("../../templates/product.handlebars");
 
 
 export class Product implements IProduct {
@@ -46,16 +47,22 @@ export class Product implements IProduct {
     }
     /*static async get(id: number): Promise<Product> {
 
-    }
+    }*/
     async post(): Promise<Product> {
-
-    }
+        let peticion = Http.post<Product>(SERVER+"/products",this);
+        return peticion;
+    }/*
     async delete(): Promise<void> {
 
-    }
+    }*/
     toHTML(): HTMLDivElement {
         let card:HTMLDivElement = document.createElement('div');
-        let prodhtml = productsR
+        card.classList.add("card","shadow")
+        this.datePublished = moment(this.datePublished,"YYYYMMDD").startOf('hour').fromNow();
+        let prodhtml = productsTemplate(this);
+        card.innerHTML=prodhtml;
+        return card;
+        
     }
-*/
+
 }
