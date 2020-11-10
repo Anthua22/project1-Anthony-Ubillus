@@ -6,6 +6,7 @@ import { IProduct } from './interfaces/iproduct';
 import { Http } from './classes/http.class';
 import { ICategories } from './interfaces/icategory';
 import { Auth } from './classes/auth.class';
+import Swal from 'sweetalert2';
 
 let newProductForm: HTMLFormElement;
 let errorMsg: HTMLDivElement;
@@ -43,7 +44,11 @@ async function validateForm(event: Event): Promise<void> {
             await prod.post();
             location.assign("index.html");
         } catch (e) {
-            alert(e);
+            Swal.fire({
+                icon:'error',
+                title:'Login Error',
+                text:e
+            });
         }
     }
 }
