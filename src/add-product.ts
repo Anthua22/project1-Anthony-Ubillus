@@ -5,15 +5,18 @@ import * as moment from 'moment';
 import { IProduct } from './interfaces/iproduct';
 import { Http } from './classes/http.class';
 import { ICategories } from './interfaces/icategory';
+import { Auth } from './classes/auth.class';
 
 let newProductForm: HTMLFormElement;
 let errorMsg: HTMLDivElement;
 let productNew: IProduct;
+let logout:HTMLElement; 
 
 document.addEventListener("DOMContentLoaded", e => {
     newProductForm = document.getElementById("newProduct") as HTMLFormElement;
     errorMsg = document.getElementById("errorMsg") as HTMLDivElement;
-
+    logout = document.getElementById('logout');
+    logout.addEventListener('click',Auth.logout);
     loadCategories();
 
     (newProductForm.image as HTMLInputElement).addEventListener('change', loadImage);

@@ -10,23 +10,38 @@ export class Auth {
     lat?: number;
     lng?: number;
     constructor(user: User) {
-        this.email=user.email,
-        this.password=user.password;
+        this.email = user.email,
+            this.password = user.password;
         this.lat = user.lat;
         this.lng = user.lng;
     }
 
-    static validateToken(): boolean {
-        if (localStorage.token != null) {
-            return true;
+  
+
+    static async checkToken(): Promise<void>{
+        let token = localStorage.getItem('token');
+        if(token){
+            try{
+                await Http.get(`${SERVER}/auth/validate`);
+            }catch(e){
+                if(e.status && e.status===401){
+                    localStorage.removeItem('token');
+                }
+                throw new Error();
+            }
+        }else{
+            throw new Error();
         }
-        return false;
     }
 
-    postLogin():Promise<TokenResponse> {
-        let peticion:Promise<TokenResponse>= Http.post(SERVER + "/auth/login", this);
+    postLogin(): Promise<TokenResponse> {
+        let peticion: Promise<TokenResponse> = Http.post(SERVER + "/auth/login", this);
         return peticion;
     }
 
-    
+    static logout(): void {
+        localStorage.removeItem('token');
+        location.assign("login.html");
+    }
+
 }

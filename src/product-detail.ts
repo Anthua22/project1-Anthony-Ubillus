@@ -1,5 +1,6 @@
 import * as mapboxgl from "mapbox-gl";
 import Swal from "sweetalert2";
+import { Auth } from "./classes/auth.class";
 import { Product } from "./classes/product.class";
 import { MAPBOX_TOKEN } from "./constants";
 
@@ -7,11 +8,14 @@ let id: number;
 let container: HTMLDivElement;
 let map: HTMLDivElement;
 let mapBox: mapboxgl.Map;
+let logout:HTMLElement;
 
 (mapboxgl as any).accessToken = MAPBOX_TOKEN;
 
 document.addEventListener('DOMContentLoaded', e => {
     id = parseInt(location.search.split("=")[1]);
+    logout = document.getElementById('logout');
+    logout.addEventListener('click',Auth.logout);
     if (!id) {
         location.assign("index.html");
     }

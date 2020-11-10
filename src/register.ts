@@ -1,8 +1,8 @@
 import Swal from "sweetalert2";
 import { Geolocation } from "./classes/geolocation.class";
 import { User } from "./classes/user.class";
-import * as ErrorMesagge from "./classes/responseError.class";
 import { IUser } from "./interfaces/iuser";
+import { ResponseErrorRegister } from "./interfaces/responses";
 
 let user: User;
 let img: HTMLImageElement;
@@ -53,13 +53,10 @@ function addUser(event: Event): void {
 
         user = new User(us);
 
-
-
-
         User.postRegister(user).then(x => {
             location.assign('login.html');
         }).catch(x => {
-            let promise: Promise<ErrorMesagge.ResponseErrorRegister> = x.json() as Promise<ErrorMesagge.ResponseErrorRegister>;
+            let promise: Promise<ResponseErrorRegister> = x.json() as Promise<ResponseErrorRegister>;
             promise.then(y => {
                 let errors: string = '';
                 y.message.forEach(x => {
@@ -83,8 +80,6 @@ function addUser(event: Event): void {
         });
 
     }
-
-
 
 
 

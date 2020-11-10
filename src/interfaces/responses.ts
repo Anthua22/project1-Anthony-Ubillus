@@ -25,3 +25,14 @@ export interface UserResponse {
 export interface CategoriesResponse {
     categories: ICategory[];
 }
+
+export interface ResponseErrorLogin{
+    status:number;
+    error:string;
+}
+
+export interface ResponseErrorRegister{
+    statusCode:number;
+    message:string[];
+    error:string
+}
