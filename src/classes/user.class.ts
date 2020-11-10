@@ -32,14 +32,17 @@ export class User implements IUser {
         return peticion;
     }
     static async getProfile(id?: number): Promise<UserResponse>{
-        let peticion:Promise<UserResponse> = Http.get(SERVER + `/users/${id}`);
+        let peticion:Promise<UserResponse> ;
+        if(id){
+            peticion = Http.get(SERVER + `/users/${id}`);
+        }
+        else{
+            peticion = Http.get(SERVER + `/users/me`);
+        }
         return peticion;
     }
 
-    static async getmyProfile(): Promise<UserResponse>{
-        let peticion:Promise<UserResponse> = Http.get(SERVER + `/users/me`);
-        return peticion;
-    }
+   
     static async saveProfile(name: string, email: string): Promise<void>{
         return null;
     }
