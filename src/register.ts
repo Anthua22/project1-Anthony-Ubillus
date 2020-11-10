@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { Geolocation } from "./classes/geolocation.class";
 import { User } from "./classes/user.class";
 import { IUser } from "./interfaces/iuser";
-import { ResponseErrorRegister } from "./interfaces/responses";
+import { ResponseError } from "./interfaces/responses";
 
 let user: User;
 let img: HTMLImageElement;
@@ -56,12 +56,10 @@ function addUser(event: Event): void {
         User.postRegister(user).then(x => {
             location.assign('login.html');
         }).catch(x => {
-            let promise: Promise<ResponseErrorRegister> = x.json() as Promise<ResponseErrorRegister>;
+            let promise: Promise<ResponseError> = x.json() as Promise<ResponseError>;
             promise.then(y => {
-                let errors: string = '';
-                y.message.forEach(x => {
-                    errors += x + "\n";
-                })
+                let errors: string = y.message.join('\n');
+                
                 Swal.fire({
                     icon: 'error',
                     title: 'Register Error',

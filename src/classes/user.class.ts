@@ -44,13 +44,15 @@ export class User implements IUser {
 
    
     static async saveProfile(name: string, email: string): Promise<void>{
-        return null;
+        let peticion:Promise<void>=Http.put(SERVER + `/users/me`,{name:name,email:email});
+        return peticion;
     }
     static async saveAvatar(avatar: string): Promise<string>{
         return null;
     }
     static async savePassword(password: string): Promise<void>{
-        return null;
+        let peticion:Promise<void>=Http.put(SERVER + `/users/me`,{password:password});
+        return peticion;
     }
 
     toHTML(): HTMLDivElement{

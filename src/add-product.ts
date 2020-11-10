@@ -7,6 +7,7 @@ import { Http } from './classes/http.class';
 import { ICategories } from './interfaces/icategory';
 import { Auth } from './classes/auth.class';
 import Swal from 'sweetalert2';
+import { Utils } from './classes/utils.class';
 
 let newProductForm: HTMLFormElement;
 let errorMsg: HTMLDivElement;
@@ -20,7 +21,9 @@ document.addEventListener("DOMContentLoaded", e => {
     logout.addEventListener('click',Auth.logout);
     loadCategories();
 
-    (newProductForm.image as HTMLInputElement).addEventListener('change', loadImage);
+    (newProductForm.image as HTMLInputElement).addEventListener('change', e=>{
+        Utils.loadImage(e,(document.getElementById('imgPreview') as HTMLImageElement))
+    });
 
     newProductForm.addEventListener('submit', validateForm);
 });
@@ -53,16 +56,6 @@ async function validateForm(event: Event): Promise<void> {
     }
 }
 
-function loadImage(event: Event): void {
-    let file: File = (event.target as HTMLInputElement).files[0];
-    let reader = new FileReader();
-
-    if (file) reader.readAsDataURL(file);
-
-    reader.addEventListener('load', e => {
-        (document.getElementById("imgPreview") as HTMLImageElement).src = reader.result.toString();
-    });
-}
 
 async function loadCategories(): Promise<void> {
     let catResp: ICategories = await Http.get(`${SERVER}/categories`);

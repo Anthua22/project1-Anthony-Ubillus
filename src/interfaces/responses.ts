@@ -31,7 +31,7 @@ export interface ResponseErrorLogin{
     error:string;
 }
 
-export interface ResponseErrorRegister{
+export interface ResponseError{
     statusCode:number;
     message:string[];
     error:string
