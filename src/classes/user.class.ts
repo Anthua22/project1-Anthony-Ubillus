@@ -48,10 +48,11 @@ export class User implements IUser {
         return peticion;
     }
     static async saveAvatar(avatar: string): Promise<string>{
-        return null;
+        let peticion:Promise<string>=Http.put(SERVER + `/users/me/photo`,{photo:avatar}).then(x=>{return (x as any).photo});
+        return peticion;
     }
     static async savePassword(password: string): Promise<void>{
-        let peticion:Promise<void>=Http.put(SERVER + `/users/me`,{password:password});
+        let peticion:Promise<void>=Http.put(SERVER + `/users/me/password`,{password:password});
         return peticion;
     }
 
