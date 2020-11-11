@@ -14,6 +14,8 @@ let errorMsg: HTMLDivElement;
 let productNew: IProduct;
 let logout:HTMLElement; 
 
+Auth.checkToken().catch(()=>location.assign('login.html'));
+
 document.addEventListener("DOMContentLoaded", e => {
     newProductForm = document.getElementById("newProduct") as HTMLFormElement;
     errorMsg = document.getElementById("errorMsg") as HTMLDivElement;

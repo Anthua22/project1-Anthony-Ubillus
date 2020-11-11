@@ -10,6 +10,8 @@ let map: HTMLDivElement;
 let mapBox: mapboxgl.Map;
 let logout:HTMLElement;
 
+Auth.checkToken().catch(()=>location.assign('login.html'));
+
 (mapboxgl as any).accessToken = MAPBOX_TOKEN;
 
 document.addEventListener('DOMContentLoaded', e => {
