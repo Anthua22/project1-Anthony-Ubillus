@@ -51,17 +51,3 @@ async function login(event: Event): Promise<void> {
 
 
 }
-
-function geolocation(): void {
-
-    Geolocation.getLocation().then(x => {
-
-
-    }).catch(x => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Geolocalition Error ',
-            text: x
-        });
-    })
-}
