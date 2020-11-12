@@ -6,17 +6,6 @@ import { User } from "./user.class";
 
 export class Auth {
 
-    password: string;
-    email: string;
-    lat?: number;
-    lng?: number;
-    constructor(user: User) {
-        this.email = user.email,
-            this.password = user.password;
-        this.lat = user.lat;
-        this.lng = user.lng;
-    }
-
   
 
     static async checkToken(): Promise<void>{
