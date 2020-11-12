@@ -8,11 +8,13 @@ let serch: HTMLInputElement;
 let products: Promise<Product[]>;
 
 
-document.addEventListener('DOMContentLoaded', e => {
-
-    if (!Auth.validateToken()) {
+ if (!Auth.validateToken()) {
         location.assign("login.html");
     }
+
+document.addEventListener('DOMContentLoaded', e => {
+
+   
 
     logout = document.getElementById('logout');
     logout.addEventListener('click', logoutFunction);
