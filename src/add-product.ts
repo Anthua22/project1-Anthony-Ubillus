@@ -5,18 +5,27 @@ import * as moment from 'moment';
 import { IProduct } from './interfaces/iproduct';
 import { Http } from './classes/http.class';
 import { ICategories } from './interfaces/icategory';
+import { Auth } from './classes/auth.class';
+import Swal from 'sweetalert2';
+import { Utils } from './classes/utils.class';
 
 let newProductForm: HTMLFormElement;
 let errorMsg: HTMLDivElement;
 let productNew: IProduct;
+let logout:HTMLElement; 
+
+Auth.checkToken().catch(()=>location.assign('login.html'));
 
 document.addEventListener("DOMContentLoaded", e => {
     newProductForm = document.getElementById("newProduct") as HTMLFormElement;
     errorMsg = document.getElementById("errorMsg") as HTMLDivElement;
-
+    logout = document.getElementById('logout');
+    logout.addEventListener('click',Auth.logout);
     loadCategories();
 
-    (newProductForm.image as HTMLInputElement).addEventListener('change', loadImage);
+    (newProductForm.image as HTMLInputElement).addEventListener('change', e=>{
+        Utils.loadImage(e,(document.getElementById('imgPreview') as HTMLImageElement))
+    });
 
     newProductForm.addEventListener('submit', validateForm);
 });
@@ -40,21 +49,15 @@ async function validateForm(event: Event): Promise<void> {
             await prod.post();
             location.assign("index.html");
         } catch (e) {
-            alert(e);
+            Swal.fire({
+                icon:'error',
+                title:'Login Error',
+                text:e
+            });
         }
     }
 }
 
-function loadImage(event: Event): void {
-    let file: File = (event.target as HTMLInputElement).files[0];
-    let reader = new FileReader();
-
-    if (file) reader.readAsDataURL(file);
-
-    reader.addEventListener('load', e => {
-        (document.getElementById("imgPreview") as HTMLImageElement).src = reader.result.toString();
-    });
-}
 
 async function loadCategories(): Promise<void> {
     let catResp: ICategories = await Http.get(`${SERVER}/categories`);

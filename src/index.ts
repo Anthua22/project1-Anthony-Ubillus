@@ -8,16 +8,13 @@ let serch: HTMLInputElement;
 let products: Promise<Product[]>;
 
 
- if (!Auth.validateToken()) {
-        location.assign("login.html");
-    }
+Auth.checkToken().catch(()=>location.assign('login.html'));
 
 document.addEventListener('DOMContentLoaded', e => {
 
    
-
     logout = document.getElementById('logout');
-    logout.addEventListener('click', logoutFunction);
+    logout.addEventListener('click', Auth.logout);
     serch = document.getElementById('search') as HTMLInputElement;
     productscontainer = document.getElementById("productsContainer") as HTMLDivElement;
     products = Product.getAll();
@@ -31,10 +28,6 @@ document.addEventListener('DOMContentLoaded', e => {
     serch.addEventListener('keyup', filter)
 })
 
-function logoutFunction(): void {
-    localStorage.removeItem('token');
-    location.assign("login.html");
-}
 
 
 function filter(): void {

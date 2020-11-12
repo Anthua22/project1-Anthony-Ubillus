@@ -32,22 +32,28 @@ export class User implements IUser {
         return peticion;
     }
     static async getProfile(id?: number): Promise<UserResponse>{
-        let peticion:Promise<UserResponse> = Http.get(SERVER + `/users/${id}`);
+        let peticion:Promise<UserResponse> ;
+        if(id){
+            peticion = Http.get(SERVER + `/users/${id}`);
+        }
+        else{
+            peticion = Http.get(SERVER + `/users/me`);
+        }
         return peticion;
     }
 
-    static async getmyProfile(): Promise<UserResponse>{
-        let peticion:Promise<UserResponse> = Http.get(SERVER + `/users/me`);
+   
+    static async saveProfile(name: string, email: string): Promise<void>{
+        let peticion:Promise<void>=Http.put(SERVER + `/users/me`,{name:name,email:email});
         return peticion;
     }
-    static async saveProfile(name: string, email: string): Promise<void>{
-        return null;
-    }
     static async saveAvatar(avatar: string): Promise<string>{
-        return null;
+        let peticion:Promise<string>=Http.put(SERVER + `/users/me/photo`,{photo:avatar}).then(x=>{return (x as any).photo});
+        return peticion;
     }
     static async savePassword(password: string): Promise<void>{
-        return null;
+        let peticion:Promise<void>=Http.put(SERVER + `/users/me/password`,{password:password});
+        return peticion;
     }
 
     toHTML(): HTMLDivElement{
