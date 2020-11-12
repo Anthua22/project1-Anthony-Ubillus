@@ -1,7 +1,7 @@
 
 import { SERVER } from "../constants";
 import { IUser } from "../interfaces/iuser";
-import { UserResponse } from "../interfaces/responses";
+import { PhotoResponse, UserResponse } from "../interfaces/responses";
 import { Http } from "./http.class";
 const profileTemplate: (product: IUser) => string = require("../../templates/profile.handlebars");
 
@@ -48,7 +48,7 @@ export class User implements IUser {
         return peticion;
     }
     static async saveAvatar(avatar: string): Promise<string>{
-        let peticion:Promise<string>=Http.put(SERVER + `/users/me/photo`,{photo:avatar}).then(x=>{return (x as any).photo});
+        let peticion:Promise<string>=Http.put<PhotoResponse>(SERVER + `/users/me/photo`,{photo:avatar}).then(x=>{return x.photo});
         return peticion;
     }
     static async savePassword(password: string): Promise<void>{

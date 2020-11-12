@@ -1,4 +1,5 @@
 import { SERVER } from "../constants";
+import { IUser } from "../interfaces/iuser";
 import { TokenResponse } from "../interfaces/responses";
 import { Http } from "./http.class";
 import { User } from "./user.class";
@@ -34,8 +35,8 @@ export class Auth {
         }
     }
 
-    postLogin(): Promise<TokenResponse> {
-        let peticion: Promise<TokenResponse> = Http.post(SERVER + "/auth/login", this);
+    static login(user:IUser): Promise<TokenResponse> {
+        let peticion: Promise<TokenResponse> = Http.post(SERVER + "/auth/login", user);
         return peticion;
     }
 
