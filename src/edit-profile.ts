@@ -13,11 +13,11 @@ let formProfile: HTMLFormElement;
 let formPhoto: HTMLFormElement;
 let formPassword: HTMLFormElement;
 let logout: HTMLElement;
-let cropper:Cropper;
+let cropper: Cropper;
 let imgPreview: HTMLImageElement;
-let btnCrop:HTMLButtonElement;
+let btnCrop: HTMLButtonElement;
 
-//Auth.checkToken().catch(()=>location.assign('login.html'));
+Auth.checkToken().catch(() => location.assign('login.html'));
 document.addEventListener('DOMContentLoaded', e => {
     formProfile = document.getElementById('form-profile') as HTMLFormElement;
     formPhoto = document.getElementById('form-photo') as HTMLFormElement;
@@ -34,16 +34,15 @@ document.addEventListener('DOMContentLoaded', e => {
 
     formProfile.addEventListener('submit', updateProfile);
     formPassword.addEventListener('submit', updatePassword);
-   
+
     (formPhoto.image as HTMLInputElement).addEventListener('change', e => {
         imgPreview.classList.remove('d-none');
-        cropper = new Cropper(imgPreview);
-        cropper.destroy();
-        Utils.loadImageCrop(e, imgPreview,cropper, btnCrop,(formPhoto.photo as HTMLImageElement));
-        
+
+     cropperMake(e);
+
     });
 
-  
+
     formPhoto.addEventListener('submit', updateAvatar);
 
 })
@@ -54,13 +53,34 @@ function completeForm(): void {
     (formPhoto.photo as HTMLImageElement).src = me.photo;
 }
 
-function cropperMake():void{
+function cropperMake(event:Event): void {
+    event.preventDefault();
+    let file: File = (event.target as HTMLInputElement).files[0];
+    let reader = new FileReader();
+    if (file) reader.readAsDataURL(file);
+
+    reader.addEventListener('load', e => {
+        imgPreview.src = reader.result.toString();
+
+
+        cropper = new Cropper(imgPreview, {
+            aspectRatio: 1,
+            center: true,
+            viewMode: 3,
+            dragMode: "crop",
+
+            minContainerWidth: 200
+        });
+
+
+    });
+ 
 
 
 }
-function updateProfile(event:Event): void {
+function updateProfile(event: Event): void {
     event.preventDefault();
-    User.saveProfile((formProfile.nameUser as HTMLInputElement).value.trim(),(formProfile.email as HTMLInputElement).value.trim()).then(()=>{
+    User.saveProfile((formProfile.nameUser as HTMLInputElement).value.trim(), (formProfile.email as HTMLInputElement).value.trim()).then(() => {
         Swal.fire({
             icon: 'success',
             title: 'Profile Update',
@@ -103,15 +123,35 @@ function updatePassword(event: Event): void {
 
 function updateAvatar(event: Event): void {
     event.preventDefault();
-    User.saveAvatar(imgPreview.src).then(x => {
-        imgPreview.classList.add('d-none');
-        (formPhoto.photo as HTMLImageElement).src = x;
-        Swal.fire({
-            icon: 'success',
-            title: 'Photo Update',
-            text: "The photo's profile has changed update successfull"
-        });
+
+
+    let result: HTMLCanvasElement = cropper.getCroppedCanvas();
+
+    result.toBlob(e => {
+        let reader: FileReader = new FileReader();
+        reader.readAsDataURL(e);
+
+        reader.addEventListener('load', () => {
+            (formPhoto.photo as HTMLImageElement).src = reader.result.toString();
+            
+            imgPreview.classList.add('d-none');
+
+            User.saveAvatar((formPhoto.photo as HTMLImageElement).src).then(x => {
+
+                (formPhoto.photo as HTMLImageElement).src = x;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Photo Update',
+                    text: "The photo's profile has changed update successfull"
+                });
+            });
+            cropper.destroy();
+            cropper.disable();
+        })
     })
+
+
+
 
 }
 
