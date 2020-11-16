@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/node_modules/cropperjs/dist/cropper.min.css">
 </head>
 
 <body>
@@ -58,7 +59,15 @@
       </div>
       <p class="text-danger" id="errorInfo2"></p>
       <p class="text-success" id="okInfo2"></p>
-      <button type="submit" class="btn btn-primary">Edit photo</button>
+      <div class="row">
+        <div class="col" class="w-100">
+          <button type="submit" class="btn btn-primary w-100">Edit photo</button>
+        </div>
+        <div class="col" class="w-100">
+          <button id="crop" class="btn btn-primary w-100">Crop</button>
+        </div>
+      </div>
+      
     </form>
     <form action="#" id="form-password" class="mt-4" method="POST" role="form">
       <legend>Edit password</legend>
