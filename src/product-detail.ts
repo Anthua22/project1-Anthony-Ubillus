@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', e => {
 function rescueProduct(): void {
     Product.get(id).then(x => {
         let prod: Product = new Product(x.product);
-        console.log(prod)
         container.appendChild(prod.toHTML());
         makeMap(prod);
         createMarker("red", prod)
@@ -45,6 +44,7 @@ function rescueProduct(): void {
     });
 
 }
+
 
 function makeMap(product: Product):void {
     mapBox = new mapboxgl.Map({

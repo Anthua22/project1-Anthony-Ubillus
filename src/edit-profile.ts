@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', e => {
     (formPhoto.image as HTMLInputElement).addEventListener('change', e => {
         imgPreview.classList.remove('d-none');
         cropper = new Cropper(imgPreview);
+        cropper.destroy();
         Utils.loadImageCrop(e, imgPreview,cropper, btnCrop,(formPhoto.photo as HTMLImageElement));
         
     });
@@ -53,10 +54,13 @@ function completeForm(): void {
     (formPhoto.photo as HTMLImageElement).src = me.photo;
 }
 
+function cropperMake():void{
 
-function updateProfile(event: Event): void {
+
+}
+function updateProfile(event:Event): void {
     event.preventDefault();
-    User.saveProfile((formProfile.nameUser as HTMLInputElement).value, (formProfile.email as HTMLInputElement).value).then(() => {
+    User.saveProfile((formProfile.nameUser as HTMLInputElement).value.trim(),(formProfile.email as HTMLInputElement).value.trim()).then(()=>{
         Swal.fire({
             icon: 'success',
             title: 'Profile Update',

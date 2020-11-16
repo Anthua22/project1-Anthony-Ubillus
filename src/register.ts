@@ -38,7 +38,7 @@ function geolocation(): void {
 function addUser(event: Event): void {
     event.preventDefault();
     if (validateEmail()) {
-        let us: IUser = { email: (form.email as HTMLInputElement).value, password: (form.password as HTMLInputElement).value, name: (form.nameUser as HTMLInputElement).value, lat: parseFloat((form.lat as HTMLInputElement).value), lng: parseFloat((form.lng as HTMLInputElement).value) };
+        let us: IUser = { email: (form.email as HTMLInputElement).value.trim(), password: (form.password as HTMLInputElement).value.trim(), name: (form.nameUser as HTMLInputElement).value.trim(), lat: parseFloat((form.lat as HTMLInputElement).value), lng: parseFloat((form.lng as HTMLInputElement).value) };
         us.photo = img.src;
         user = new User(us);
 

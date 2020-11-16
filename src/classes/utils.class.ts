@@ -20,10 +20,11 @@ export class Utils {
         let file: File = (event.target as HTMLInputElement).files[0];
         let reader = new FileReader();
         if (file) reader.readAsDataURL(file);
-
+      //  cropper.destroy();
+        //cropper = null;
         reader.addEventListener('load', e => {
             image.src = reader.result.toString();
-            cropper.destroy();
+         
             
             cropper = new Cropper(image, {
                 aspectRatio: 1,
@@ -40,10 +41,9 @@ export class Utils {
                     height:400
                 });
         
-                result.toBlob(function(blob){
-                    let url = URL.createObjectURL(blob);
+                result.toBlob(e=>{
                     let reader : FileReader = new FileReader();
-                    reader.readAsDataURL(blob);
+                    reader.readAsDataURL(e);
         
                     reader.addEventListener('load',()=>{
                         photo.src = reader.result.toString();
