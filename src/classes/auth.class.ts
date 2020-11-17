@@ -32,4 +32,8 @@ export class Auth {
         location.assign("login.html");
     }
 
+    static register(user: IUser) :Promise<String>{
+        let peticion:Promise<String> = Http.post(SERVER + "/auth/register", user);
+        return peticion;
+    }
 }

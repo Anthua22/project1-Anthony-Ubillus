@@ -1,5 +1,5 @@
 
-import { SERVER } from './constants';
+import { SERVER, TYPE } from './constants';
 import { Product } from './classes/product.class';
 import * as moment from 'moment';
 import { IProduct } from './interfaces/iproduct';
@@ -13,6 +13,7 @@ let newProductForm: HTMLFormElement;
 let errorMsg: HTMLDivElement;
 let productNew: IProduct;
 let logout:HTMLElement; 
+let cropper:Cropper;
 
 Auth.checkToken().catch(()=>location.assign('login.html'));
 
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", e => {
     loadCategories();
 
     (newProductForm.image as HTMLInputElement).addEventListener('change', e=>{
-        Utils.loadImage(e,(document.getElementById('imgPreview') as HTMLImageElement))
+        Utils.loadImage(e,(document.getElementById('imgPreview') as HTMLImageElement),cropper,TYPE[0])
     });
 
     newProductForm.addEventListener('submit', validateForm);
@@ -49,13 +50,11 @@ async function validateForm(event: Event): Promise<void> {
             await prod.post();
             location.assign("index.html");
         } catch (e) {
-            Swal.fire({
-                icon:'error',
-                title:'Login Error',
-                text:e
-            });
+            Utils.showError(e);
         }
     }
+
+
 }
 
 

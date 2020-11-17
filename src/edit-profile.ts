@@ -5,8 +5,7 @@ import { Utils } from "./classes/utils.class";
 import { ResponseError } from "./interfaces/responses";
 
 import Cropper from 'cropperjs';
-
-
+import { TYPE } from "./constants";
 
 let me: User;
 let formProfile: HTMLFormElement;
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', e => {
     (formPhoto.image as HTMLInputElement).addEventListener('change', e => {
         imgPreview.classList.remove('d-none');
 
-     cropperMake(e);
+        Utils.loadImage(e,imgPreview,cropper,TYPE[1]);
 
     });
 
@@ -53,31 +52,6 @@ function completeForm(): void {
     (formPhoto.photo as HTMLImageElement).src = me.photo;
 }
 
-function cropperMake(event:Event): void {
-    event.preventDefault();
-    let file: File = (event.target as HTMLInputElement).files[0];
-    let reader = new FileReader();
-    if (file) reader.readAsDataURL(file);
-
-    reader.addEventListener('load', e => {
-        imgPreview.src = reader.result.toString();
-
-
-        cropper = new Cropper(imgPreview, {
-            aspectRatio: 1,
-            center: true,
-            viewMode: 3,
-            dragMode: "crop",
-
-            minContainerWidth: 200
-        });
-
-
-    });
- 
-
-
-}
 function updateProfile(event: Event): void {
     event.preventDefault();
     User.saveProfile((formProfile.nameUser as HTMLInputElement).value.trim(), (formProfile.email as HTMLInputElement).value.trim()).then(() => {
@@ -111,7 +85,7 @@ function updatePassword(event: Event): void {
                 title: 'Password Update',
                 text: 'The password has changed update successfull'
             });
-        })
+        }).catch(e=>Utils.showError(e))
     } else {
         Swal.fire({
             icon: 'error',
@@ -123,8 +97,6 @@ function updatePassword(event: Event): void {
 
 function updateAvatar(event: Event): void {
     event.preventDefault();
-
-
     let result: HTMLCanvasElement = cropper.getCroppedCanvas();
 
     result.toBlob(e => {
@@ -133,7 +105,7 @@ function updateAvatar(event: Event): void {
 
         reader.addEventListener('load', () => {
             (formPhoto.photo as HTMLImageElement).src = reader.result.toString();
-            
+
             imgPreview.classList.add('d-none');
 
             User.saveAvatar((formPhoto.photo as HTMLImageElement).src).then(x => {
@@ -142,13 +114,15 @@ function updateAvatar(event: Event): void {
                 Swal.fire({
                     icon: 'success',
                     title: 'Photo Update',
-                    text: "The photo's profile has changed update successfull"
+                    text: "Profile picture has been successfully changed"
                 });
+            }).catch(x=>{
+                Utils.showError(x);
             });
             cropper.destroy();
             cropper.disable();
         })
-    })
+    });
 
 
 
@@ -157,8 +131,6 @@ function updateAvatar(event: Event): void {
 
 
 function matchPassword(): boolean {
-    if ((formPassword.password as HTMLInputElement).value === (formPassword.password2 as HTMLInputElement).value)
-        return true;
-    return false;
+    return  ((formPassword.password as HTMLInputElement).value === (formPassword.password2 as HTMLInputElement).value);
 }
 

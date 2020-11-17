@@ -27,10 +27,7 @@ export class User implements IUser {
     }
   
 
-    static postRegister(user: User) :Promise<String>{
-        let peticion:Promise<String> = Http.post(SERVER + "/auth/register", user);
-        return peticion;
-    }
+   
     static async getProfile(id?: number): Promise<UserResponse>{
         let peticion:Promise<UserResponse> ;
         if(id){
