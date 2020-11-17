@@ -45,7 +45,6 @@ async function login(event: Event): Promise<void> {
             localStorage.setItem("token", x.accessToken);
             location.assign('index.html');
         }).catch(x => {
-
             let promise: Promise<ResponseErrorLogin> = (x.json() as Promise<ResponseErrorLogin>);
             promise.then(y => {
                 Swal.fire({

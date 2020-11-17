@@ -46,7 +46,10 @@ function loadImage(event: Event): void {
 
     reader.addEventListener('load', e => {
         img.src = reader.result.toString();
-
+        if(cropper){
+            cropper.destroy();
+            cropper.disable();
+        }
         cropper = new Cropper(img, {
             aspectRatio: 1,
             center: true,
