@@ -99,15 +99,20 @@ function loadImage(event: Event): void {
 
 
 async function loadCategories(): Promise<void> {
-    let catResp: ICategories = await Http.get(`${SERVER}/categories`);
+    try{
+        let catResp: ICategories = await Http.get(`${SERVER}/categories`);
 
-    catResp.categories.forEach(c => {
-        let option: HTMLOptionElement = document.createElement("option");
-        option.value = c.id.toString();
-        option.innerText = c.name;
-        newProductForm.category.appendChild(option);
-    });
-
+        catResp.categories.forEach(c => {
+            let option: HTMLOptionElement = document.createElement("option");
+            option.value = c.id.toString();
+            option.innerText = c.name;
+            newProductForm.category.appendChild(option);
+        });
+    
+    }catch(e){
+        Utils.showError(e);
+    }
+   
 }
 
 
