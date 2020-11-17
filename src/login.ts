@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', e => {
 
 async function login(event: Event): Promise<void> {
     try {
-
         event.preventDefault();
         let us: IUser = { email: (form.email as HTMLInputElement).value, password: (form.password as HTMLInputElement).value };
 
@@ -41,11 +40,23 @@ async function login(event: Event): Promise<void> {
         })
 
     } catch (x) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Geolocalition Error ',
-            text: x
-        });
+        let us: IUser = { email: (form.email as HTMLInputElement).value, password: (form.password as HTMLInputElement).value };
+        Auth.login(us).then(x => {
+            localStorage.setItem("token", x.accessToken);
+            location.assign('index.html');
+        }).catch(x => {
+
+            let promise: Promise<ResponseErrorLogin> = (x.json() as Promise<ResponseErrorLogin>);
+            promise.then(y => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Error',
+                    text: y.error
+                });
+            });
+
+
+        })
     };
 
 
