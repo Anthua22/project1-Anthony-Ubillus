@@ -114,7 +114,7 @@ function updatePassword(event: Event): void {
 
 function updateAvatar(event: Event): void {
     event.preventDefault();
-    let result: HTMLCanvasElement = cropper.getCroppedCanvas();
+    let result: HTMLCanvasElement = cropper.getCroppedCanvas({width :200});
 
     result.toBlob(e => {
         let reader: FileReader = new FileReader();

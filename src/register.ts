@@ -63,7 +63,9 @@ function addUser(event: Event): void {
     if (validateEmail()) {
 
         let us: IUser = { email: (form.email as HTMLInputElement).value.trim(), password: (form.password as HTMLInputElement).value.trim(), name: (form.nameUser as HTMLInputElement).value.trim(), lat: parseFloat((form.lat as HTMLInputElement).value), lng: parseFloat((form.lng as HTMLInputElement).value) };
-        let result: HTMLCanvasElement = cropper.getCroppedCanvas();
+        let result: HTMLCanvasElement = cropper.getCroppedCanvas({
+            width :200
+        });
       
         result.toBlob(e => {
             let reader: FileReader = new FileReader();
@@ -73,8 +75,6 @@ function addUser(event: Event): void {
                 img.src= reader.result.toString();
                 us.photo = img.src;
                 user = new User(us);
-
-
                 Auth.register(user).then(x => {
                     location.assign('login.html');
                 }).catch(x => {
