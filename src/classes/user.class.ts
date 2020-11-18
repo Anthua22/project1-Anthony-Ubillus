@@ -28,7 +28,7 @@ export class User implements IUser {
   
 
    
-    static async getProfile(id?: number): Promise<UserResponse>{
+    static getProfile(id?: number): Promise<UserResponse>{
         let peticion:Promise<UserResponse> ;
         if(id){
             peticion = Http.get(SERVER + `/users/${id}`);
@@ -40,15 +40,15 @@ export class User implements IUser {
     }
 
    
-    static async saveProfile(name: string, email: string): Promise<void>{
+    static saveProfile(name: string, email: string): Promise<void>{
         let peticion:Promise<void>=Http.put(SERVER + `/users/me`,{name:name,email:email});
         return peticion;
     }
-    static async saveAvatar(avatar: string): Promise<string>{
+    static saveAvatar(avatar: string): Promise<string>{
         let peticion:Promise<string>=Http.put<PhotoResponse>(SERVER + `/users/me/photo`,{photo:avatar}).then(x=>{return x.photo});
         return peticion;
     }
-    static async savePassword(password: string): Promise<void>{
+    static savePassword(password: string): Promise<void>{
         let peticion:Promise<void>=Http.put(SERVER + `/users/me/password`,{password:password});
         return peticion;
     }
@@ -59,5 +59,5 @@ export class User implements IUser {
         let userHtml = profileTemplate(this);
         div.innerHTML = userHtml;
         return div;
-    }
+    }   
 }
