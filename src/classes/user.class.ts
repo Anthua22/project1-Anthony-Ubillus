@@ -44,6 +44,8 @@ export class User implements IUser {
         let peticion:Promise<void>=Http.put(SERVER + `/users/me`,{name:name,email:email});
         return peticion;
     }
+
+
     static saveAvatar(avatar: string): Promise<string>{
         let peticion:Promise<string>=Http.put<PhotoResponse>(SERVER + `/users/me/photo`,{photo:avatar}).then(x=>{return x.photo});
         return peticion;
